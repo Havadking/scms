@@ -11,7 +11,6 @@ import java.util.Random;
  * @create: 2023-04-23 01:18
  **/
 
-
 public class ImgVerifyCodeUtils {
 
     // 验证码的长宽以及字体大小
@@ -28,6 +27,7 @@ public class ImgVerifyCodeUtils {
      * @return BufferedImage
      * @description: 生成验证码图片
      */
+
     public static BufferedImage getVerifyImage() {
         // 创建一个图片
         verifyImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
