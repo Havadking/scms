@@ -1,6 +1,5 @@
 package com.havad.smartcampusmanagementsystem.util;
 
-import org.junit.Test;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,8 +25,7 @@ public final class MD5Utils {
 
             char[] codes = new char[2* bytes.length];
             int flag = 0;
-            for (int i = 0; i < bytes.length; i++) {
-                byte b = bytes[i];
+            for (byte b : bytes) {
                 codes[flag++] = hexCodes[b >>> 4 & 0xf];
                 codes[flag++] = hexCodes[b & 0xf];
             }
