@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @create: 2023-04-25 07:00
  **/
 
-@Service("GradeServiceImpl")
+@Service("gradeServiceImpl")
 @Transactional
 public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements GradeService {
 }

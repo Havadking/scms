@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @create: 2023-04-25 07:00
  **/
 
-@Service("StudentServiceImpl")
+@Service("studentServiceImpl")
 @Transactional
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 }
