@@ -1,5 +1,7 @@
 package com.havad.smartcampusmanagementsystem.util;
 
+import org.junit.Test;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -9,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * @author: Havad
  * @create: 2023-04-23 02:43
  **/
+
 
 public final class MD5Utils {
 
