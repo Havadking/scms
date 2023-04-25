@@ -102,4 +102,8 @@ public class ImgVerifyCodeUtils {
         }
         return randomAlpha;
     }
+
+    public static char[] getVerifyCode() {
+        return verifyCode;
+    }
 }
