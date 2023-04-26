@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 public final class MD5Utils {
 
-    public static String encrypt(String data){
+    public static String md5Encrypt(String data){
         char[] hexCodes = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         byte[] bytes = data.getBytes();
 

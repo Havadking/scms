@@ -30,7 +30,7 @@ public class JwtUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .claim("UserId", userId)
                 .claim("UserType", userType)
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compressWith(CompressionCodecs.GZIP)
                 .compact();
     }
