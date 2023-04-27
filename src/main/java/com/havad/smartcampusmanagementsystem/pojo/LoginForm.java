@@ -10,11 +10,11 @@ import lombok.Data;
  **/
 
 @Data
-public class LoginIn {
+public class LoginForm {
 
-    private String userName;
+    private String username;
     private String password;
-    private String verifyCode;
+    private String verifiCode;
     private Integer userType;
 
 }

@@ -1,7 +1,7 @@
 package com.havad.smartcampusmanagementsystem.controller;
 
 import com.havad.smartcampusmanagementsystem.pojo.Admin;
-import com.havad.smartcampusmanagementsystem.pojo.LoginIn;
+import com.havad.smartcampusmanagementsystem.pojo.LoginForm;
 import com.havad.smartcampusmanagementsystem.pojo.Student;
 import com.havad.smartcampusmanagementsystem.pojo.Teacher;
 import com.havad.smartcampusmanagementsystem.service.AdminService;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.Struct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,28 +35,29 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sms/system")
 public class ScmsController {
-
+    
     @Autowired
     private AdminService adminService;
     @Autowired
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
+    
 
 
     @ApiOperation("生成验证码图片")
-    @GetMapping("/getVerifyCodeImage")
+    @GetMapping("/getVerifiCodeImage")
     public void getVerifyImage(HttpServletRequest request, HttpServletResponse response){
         // 获取验证码图片
         BufferedImage verifyImage = ImgVerifyCodeUtils.getVerifyImage();
 
         // 获取验证码
         char[] codes = ImgVerifyCodeUtils.getVerifyCode();
-        String verifyCodes = new String(codes);
+        String verifyCodes = String.valueOf(codes);
 
         // 将验证码文本放入session，以供给下次验证
         HttpSession session = request.getSession();
-        session.setAttribute("verifyCode", verifyCodes);
+        session.setAttribute("verifiCode", verifyCodes);
 
         // 将图片相应给浏览器
         try {
@@ -67,28 +67,37 @@ public class ScmsController {
         }
 
     }
-
-
+    
     @ApiOperation("登录功能")
     @PostMapping("/login")
     // 将Json自动解析
-    public ResultUtils login(@RequestBody LoginIn loginInfo, HttpServletRequest request){
+    public ResultUtils login(@RequestBody LoginForm loginInfo, HttpServletRequest request){
         // 判断验证码是否正确
         HttpSession session = request.getSession();
-        String verifyCode = session.getAttribute("verifyCode").toString();
-        String verifyCodeByUser = loginInfo.getVerifyCode();
-        if (verifyCode.equals("") || verifyCode == null) {
+        String verifyCode = String.valueOf(session.getAttribute("verifiCode"));
+        System.out.println(verifyCode);
+        String verifyCodeByUser = loginInfo.getVerifiCode();
+        System.out.println(verifyCodeByUser);
+        if ("".equals(verifyCode)) {
+            // session过期了，验证码失效
+            System.out.println("验证码失效！请重试！");
             return ResultUtils.fail().msg("验证码失效！请重试！");
+
         }
         if (!verifyCode.equalsIgnoreCase(verifyCodeByUser)) {
+            // 验证码输入错误了
+            System.out.println("验证码有误！请仔细输入！");
             return ResultUtils.fail().msg("验证码有误！请仔细输入！");
+
         }
 
         // 验证码通过，从session中移除验证码
-        session.removeAttribute("verifyCode");
+        session.removeAttribute("verifiCode");
+        System.out.println("移除验证码");
 
         // 判断用户类型
         Map<String, Object> dataForReturn = new HashMap<>();
+        System.out.println(loginInfo.getUserType());
         switch (loginInfo.getUserType()) {
             case 1:
                 // 管理员
@@ -147,18 +156,5 @@ public class ScmsController {
         }
         return ResultUtils.fail().msg("查无此人！请重新输入！");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
