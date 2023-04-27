@@ -1,7 +1,12 @@
 package com.havad.smartcampusmanagementsystem.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.havad.smartcampusmanagementsystem.pojo.Grade;
+import com.havad.smartcampusmanagementsystem.service.GradeService;
+import com.havad.smartcampusmanagementsystem.util.ResultUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: SmartCampusManagementSystem
@@ -14,4 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 // 请求路径
 @RequestMapping("/sms/gradeController")
 public class GradeController {
+
+    @Autowired
+    private GradeService gradeService;
+
+    @GetMapping("/getGrades/{pageNo}/{pageSize}")
+    public ResultUtils getGrades(
+            @PathVariable("pageNo") Integer pageNo,
+            @PathVariable("pageSize") Integer pageSize,
+            @RequestParam("gradeName") String gradeName
+    ){
+        // 分页带条件查询
+        // 分页信息
+        Page<Grade> page = new Page<>(pageNo, pageSize);
+
+        // 通过Service层查询
+        IPage<Grade> pageResult = gradeService.getGradeByOpr(page, gradeName);
+
+        return ResultUtils.success(pageResult);
+    }
+
 }
