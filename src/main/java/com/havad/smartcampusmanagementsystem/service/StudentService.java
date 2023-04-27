@@ -6,4 +6,6 @@ import com.havad.smartcampusmanagementsystem.pojo.Student;
 
 public interface StudentService extends IService<Student> {
     Student login(LoginForm loginInfo);
+
+    Student getStudentInfoById(Long userId);
 }

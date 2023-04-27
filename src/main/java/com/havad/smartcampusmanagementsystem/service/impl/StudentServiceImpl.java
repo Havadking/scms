@@ -30,4 +30,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
         return baseMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public Student getStudentInfoById(Long userId) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+
+        return baseMapper.selectOne(queryWrapper);
+    }
 }

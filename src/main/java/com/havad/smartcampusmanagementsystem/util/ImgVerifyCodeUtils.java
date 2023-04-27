@@ -71,7 +71,7 @@ public class ImgVerifyCodeUtils {
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
-        // 计算随机绘制的座标，绘制大小为2x2的无规则图像200个
+        // 计算随机绘制的坐标，绘制大小为2x2的无规则图像200个
         for (int i = 0; i < 200; i++) {
             int x = (int) (Math.random() * WIDTH);
             int y = (int) (Math.random() * HEIGHT);

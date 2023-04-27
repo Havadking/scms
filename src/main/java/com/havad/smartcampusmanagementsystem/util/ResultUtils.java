@@ -46,7 +46,7 @@ public class ResultUtils<T> {
      * @return 封装好的数据
      * @description: 分别提供数据,及返回码和返回信息进行封装
      */
-    protected static <T> ResultUtils<T> build(T body, ResultCodeEnum codeEnum) {
+    public static <T> ResultUtils<T> build(T body, ResultCodeEnum codeEnum) {
         ResultUtils<T> result = build(body);
         result.setCode(codeEnum.getCode());
         result.setMsg(codeEnum.getMsg());

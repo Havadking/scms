@@ -9,6 +9,7 @@ import com.havad.smartcampusmanagementsystem.service.StudentService;
 import com.havad.smartcampusmanagementsystem.service.TeacherService;
 import com.havad.smartcampusmanagementsystem.util.ImgVerifyCodeUtils;
 import com.havad.smartcampusmanagementsystem.util.JwtUtils;
+import com.havad.smartcampusmanagementsystem.util.ResultCodeEnum;
 import com.havad.smartcampusmanagementsystem.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,46 @@ public class ScmsController {
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
-    
+
+    @ApiOperation("从token中获取信息")
+    @GetMapping("/getInfo")
+    public ResultUtils getInfoByToken(@RequestHeader("token") String token){
+        boolean outOfTime = JwtUtils.isOutOfTime(token);
+        if (outOfTime){
+            // 过期了
+            return ResultUtils.build(null, ResultCodeEnum.TOKEN_ERROR);
+        }
+        // 从token中解析出用户名和用户类型
+        Long userId = JwtUtils.getUserId(token);
+        Integer userType = JwtUtils.getUserType(token);
+
+        Map<String, Object> data = new HashMap<>();
+        // 判断用户类型
+        switch (userType){
+            case 1:
+                // 管理员
+                Admin admin = adminService.getAdminInfoById(userId);
+                data.put("userType", 1);
+                data.put("user", admin);
+                break;
+            case 2:
+                // 学生
+                Student student = studentService.getStudentInfoById(userId);
+                data.put("userType", 2);
+                data.put("user", student);
+                break;
+            case 3:
+                // 老师
+                Teacher teacher = teacherService.getTeacherInfoById(userId);
+                data.put("userType", 3);
+                data.put("user", teacher);
+                break;
+        }
+
+        return ResultUtils.success(data);
+    }
+
+
 
 
     @ApiOperation("生成验证码图片")

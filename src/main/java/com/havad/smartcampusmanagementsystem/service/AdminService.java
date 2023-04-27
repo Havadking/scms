@@ -6,4 +6,6 @@ import com.havad.smartcampusmanagementsystem.pojo.LoginForm;
 
 public interface AdminService extends IService<Admin> {
     Admin login(LoginForm loginInfo);
+
+    Admin getAdminInfoById(Long userId);
 }
