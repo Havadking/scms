@@ -13,6 +13,7 @@ import com.havad.smartcampusmanagementsystem.util.ResultCodeEnum;
 import com.havad.smartcampusmanagementsystem.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class ScmsController {
 
     @ApiOperation("从token中获取信息")
     @GetMapping("/getInfo")
-    public ResultUtils getInfoByToken(@RequestHeader("token") String token){
+    public ResultUtils getInfoByToken(@ApiParam("token的String类型的字符串") @RequestHeader("token") String token){
         boolean outOfTime = JwtUtils.isOutOfTime(token);
         if (outOfTime){
             // 过期了
@@ -111,7 +112,7 @@ public class ScmsController {
     @ApiOperation("登录功能")
     @PostMapping("/login")
     // 将Json自动解析
-    public ResultUtils login(@RequestBody LoginForm loginInfo, HttpServletRequest request){
+    public ResultUtils login(@ApiParam("填写的登录信息的Json格式的表单数据") @RequestBody LoginForm loginInfo, HttpServletRequest request){
         // 判断验证码是否正确
         HttpSession session = request.getSession();
         String verifyCode = String.valueOf(session.getAttribute("verifiCode"));

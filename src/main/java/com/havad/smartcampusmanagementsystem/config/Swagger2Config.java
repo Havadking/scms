@@ -1,6 +1,5 @@
 package com.havad.smartcampusmanagementsystem.config;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -58,7 +57,8 @@ public class Swagger2Config {
                 .apiInfo(scmsWebApiInfo())
                 .select()
                 // 可以测试请求头中：输入token
-                .apis(RequestHandlerSelectors.withClassAnnotation(ApiOperation.class))
+                //.apis(RequestHandlerSelectors.withClassAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.basePackage("com.havad.smartcampusmanagementsystem.controller"))
                 // 过滤admin下所有的页面
                 //.paths(Predicates.and(PathSelectors.regex("/scms/.*")))
                 // 过滤所有的error页面
