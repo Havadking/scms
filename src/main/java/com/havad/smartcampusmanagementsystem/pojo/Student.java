@@ -28,7 +28,7 @@ public class Student {
     private String email;
     private String telephone;
     private String address;
-    private String introduction;
+    private String introducation;
     private String portraitPath;
     private String clazzName;
 }

@@ -19,13 +19,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("tb_clazz")
-public class Class {
+public class Clazz {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String name;
-    private String introduction;
+    private Integer number;
+    private String introducation;
     private String headmaster;
     private String email;
     private String telephone;
-    private String grandName;
+    private String gradeName;
 }

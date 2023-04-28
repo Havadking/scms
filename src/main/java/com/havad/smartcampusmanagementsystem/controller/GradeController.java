@@ -40,10 +40,6 @@ public class GradeController {
     }
 
 
-
-
-
-
     @ApiOperation("删除Grade数据")
     @DeleteMapping("/deleteGrade")
     public ResultUtils deleteGrade(@ApiParam("要删除的年级的id的json集合") @RequestBody List<Integer> list){
