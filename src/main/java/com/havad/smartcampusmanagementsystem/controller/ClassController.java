@@ -9,10 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @program: SmartCampusManagementSystem
@@ -30,6 +29,31 @@ public class ClassController {
 
     @Autowired
     private ClassService classService;
+
+
+    @ApiOperation("删除班级的信息")
+    @DeleteMapping("/deleteClazz")
+    public ResultUtils deleteClass(@ApiParam("要删除的班级id集合") @RequestBody List<Integer> list){
+
+        // iservice接口中实现的函数
+        classService.removeByIds(list);
+        return ResultUtils.success();
+    }
+
+
+    @ApiOperation("添加或修改班级的信息")
+    @PostMapping("/saveOrUpdateClazz")
+    public ResultUtils addOrUpdateClazz(
+           @ApiParam("添加或修改的班级信息的json格式")
+           @RequestBody Clazz clazz
+    ){
+        // iService中已经实现了
+        classService.saveOrUpdate(clazz);
+
+        return ResultUtils.success();
+    }
+
+
 
 
     @ApiOperation("班级分页条件模糊查询")
