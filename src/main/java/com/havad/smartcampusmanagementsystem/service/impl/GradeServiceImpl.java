@@ -11,6 +11,8 @@ import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @program: SmartCampusManagementSystem
  * @description: GradeService的实现类
@@ -36,5 +38,12 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
 
         // 返回查询的page
         return baseMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public List<Grade> getAllGrades() {
+
+        // 查询全部
+        return baseMapper.selectList(null);
     }
 }

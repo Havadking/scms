@@ -1,6 +1,6 @@
 server:
   # 配置端口号
-  port: 8964
+  port: 9258
 
 spring:
   # 解决SpringBoot与swagger冲突问题

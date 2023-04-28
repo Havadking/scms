@@ -31,6 +31,19 @@ public class GradeController {
     @Autowired
     private GradeService gradeService;
 
+    @ApiOperation("查询全部的年级的信息")
+    @GetMapping("/getGrades")
+    public ResultUtils getGrades(){
+        List<Grade> grades = gradeService.getAllGrades();
+
+        return ResultUtils.success(grades);
+    }
+
+
+
+
+
+
     @ApiOperation("删除Grade数据")
     @DeleteMapping("/deleteGrade")
     public ResultUtils deleteGrade(@ApiParam("要删除的年级的id的json集合") @RequestBody List<Integer> list){
