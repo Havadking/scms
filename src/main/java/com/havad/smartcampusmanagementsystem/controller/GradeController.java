@@ -23,11 +23,29 @@ public class GradeController {
     @Autowired
     private GradeService gradeService;
 
+
+    @PostMapping("saveOrUpdateGrade")
+    public ResultUtils addOrUpdateGrade(@RequestBody Grade grade){
+        // 接受参数
+        // 使用@RequestBody 注解将Json转换为grade
+
+        // 调用service层完成添加或修改
+        // iservice中已经实现了
+        boolean b = gradeService.saveOrUpdate(grade);
+
+        return ResultUtils.success();
+    }
+
+
+
+
+
+
     @GetMapping("/getGrades/{pageNo}/{pageSize}")
     public ResultUtils getGrades(
             @PathVariable("pageNo") Integer pageNo,
             @PathVariable("pageSize") Integer pageSize,
-            @RequestParam("gradeName") String gradeName
+            String gradeName
     ){
         // 分页带条件查询
         // 分页信息

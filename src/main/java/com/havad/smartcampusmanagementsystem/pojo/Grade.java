@@ -26,5 +26,5 @@ public class Grade {
     private String manager;
     private String email;
     private String telephone;
-    private String introduction;
+    private String introducation;
 }
