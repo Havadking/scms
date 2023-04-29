@@ -4,15 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.havad.smartcampusmanagementsystem.pojo.Student;
 import com.havad.smartcampusmanagementsystem.service.StudentService;
+import com.havad.smartcampusmanagementsystem.util.MD5Utils;
 import com.havad.smartcampusmanagementsystem.util.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: SmartCampusManagementSystem
@@ -30,6 +28,17 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+
+    @PostMapping("/addOrUpdateStudent")
+    public ResultUtils addOrUpdateStudent(@ApiParam("要修改或新增的学生信息的json格式") @RequestBody Student student){
+        Integer id = student.getId();
+        if (id == null || id.equals(0)){
+            student.setPassword(MD5Utils.md5Encrypt(student.getPassword()));
+        }
+        studentService.saveOrUpdate(student);
+        return ResultUtils.success();
+    }
 
 
     @ApiOperation("学生信息分页模糊查询")
