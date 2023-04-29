@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @program: SmartCampusManagementSystem
  * @description: 学生Controller层
@@ -30,6 +32,16 @@ public class StudentController {
     private StudentService studentService;
 
 
+    @ApiOperation("根据一个id集合删除学习信息的功能")
+    @DeleteMapping("deleteStudentById")
+    public ResultUtils deleteStudent(@ApiParam("要删除的学生的id集合的json格式") @RequestBody List<Integer> list){
+        studentService.removeByIds(list);
+
+        return ResultUtils.success();
+    }
+
+
+    @ApiOperation("添加或修改学生的信息")
     @PostMapping("/addOrUpdateStudent")
     public ResultUtils addOrUpdateStudent(@ApiParam("要修改或新增的学生信息的json格式") @RequestBody Student student){
         Integer id = student.getId();
