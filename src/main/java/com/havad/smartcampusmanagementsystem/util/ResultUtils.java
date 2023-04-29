@@ -19,7 +19,7 @@ public class ResultUtils<T> {
     private Integer code;
 
     @ApiModelProperty(value = "返回消息")
-    private String msg;
+    private String message;
 
     @ApiModelProperty(value = "返回数据")
     private T data;
@@ -49,7 +49,7 @@ public class ResultUtils<T> {
     public static <T> ResultUtils<T> build(T body, ResultCodeEnum codeEnum) {
         ResultUtils<T> result = build(body);
         result.setCode(codeEnum.getCode());
-        result.setMsg(codeEnum.getMsg());
+        result.setMessage(codeEnum.getMsg());
         return result;
     }
 
@@ -81,8 +81,8 @@ public class ResultUtils<T> {
         return ResultUtils.fail(null);
     }
 
-    public ResultUtils<T> msg(String msg){
-        this.setMsg(msg);
+    public ResultUtils<T> message(String msg){
+        this.setMessage(msg);
         return this;
     }
     public ResultUtils<T> code(Integer code){

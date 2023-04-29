@@ -1,5 +1,6 @@
 package com.havad.smartcampusmanagementsystem.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.havad.smartcampusmanagementsystem.pojo.Admin;
 import com.havad.smartcampusmanagementsystem.pojo.LoginForm;
 import com.havad.smartcampusmanagementsystem.pojo.Student;
@@ -7,10 +8,7 @@ import com.havad.smartcampusmanagementsystem.pojo.Teacher;
 import com.havad.smartcampusmanagementsystem.service.AdminService;
 import com.havad.smartcampusmanagementsystem.service.StudentService;
 import com.havad.smartcampusmanagementsystem.service.TeacherService;
-import com.havad.smartcampusmanagementsystem.util.ImgVerifyCodeUtils;
-import com.havad.smartcampusmanagementsystem.util.JwtUtils;
-import com.havad.smartcampusmanagementsystem.util.ResultCodeEnum;
-import com.havad.smartcampusmanagementsystem.util.ResultUtils;
+import com.havad.smartcampusmanagementsystem.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -47,6 +45,79 @@ public class ScmsController {
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
+
+
+
+
+    @ApiOperation("修改密码的功能")
+    @PostMapping("/updatePwd/{oldPwd}/{newPwd}")
+    public ResultUtils updatePassword(
+            @ApiParam("token") @RequestHeader("token") String token,
+            @ApiParam("原密码") @PathVariable("oldPwd") String oldPwd,
+            @ApiParam("新密码") @PathVariable("newPwd") String newPwd
+    ){
+        boolean outOfTime = JwtUtils.isOutOfTime(token);
+        if (outOfTime){
+            // 如果token过期了
+            return ResultUtils.fail().message("登录信息（token）失效，请重新登录");
+        }
+        // 获取用户id和类型
+        Integer userType = JwtUtils.getUserType(token);
+        Long userId = JwtUtils.getUserId(token);
+
+        oldPwd = MD5Utils.md5Encrypt(oldPwd);
+        newPwd = MD5Utils.md5Encrypt(newPwd);
+
+        switch (userType) {
+            case 1:
+                QueryWrapper<Admin> queryWrapperAdmin = new QueryWrapper<>();
+                queryWrapperAdmin.eq("id", userId.intValue());
+                queryWrapperAdmin.eq("password", oldPwd);
+                Admin admin = adminService.getOne(queryWrapperAdmin);
+                if (admin != null){
+                    admin.setPassword(newPwd);
+                    adminService.saveOrUpdate(admin);
+                }else {
+                    return ResultUtils.fail().message("密码输入错误");
+                }
+                break;
+
+            case 2:
+                QueryWrapper<Student> queryWrapperStudent = new QueryWrapper<>();
+                queryWrapperStudent.eq("id", userId.intValue());
+                queryWrapperStudent.eq("password", oldPwd);
+                Student student = studentService.getOne(queryWrapperStudent);
+                if (student != null){
+                    student.setPassword(newPwd);
+                    studentService.saveOrUpdate(student);
+                }else {
+                    return ResultUtils.fail().message("密码输入错误");
+                }
+                break;
+
+            case 3:
+                QueryWrapper<Teacher> queryWrapperTeacher = new QueryWrapper<>();
+                queryWrapperTeacher.eq("id", userId.intValue());
+                queryWrapperTeacher.eq("password", oldPwd);
+                Teacher teacher = teacherService.getOne(queryWrapperTeacher);
+                if (teacher != null){
+                    teacher.setPassword(newPwd);
+                    teacherService.saveOrUpdate(teacher);
+                }else {
+                    return ResultUtils.fail().message("密码输入错误");
+                }
+                break;
+        }
+        return ResultUtils.success();
+    }
+
+
+
+
+
+
+
+
 
 
     @ApiOperation("头像上传功能的实现")
@@ -158,13 +229,13 @@ public class ScmsController {
         if ("".equals(verifyCode)) {
             // session过期了，验证码失效
             System.out.println("验证码失效！请重试！");
-            return ResultUtils.fail().msg("验证码失效！请重试！");
+            return ResultUtils.fail().message("验证码失效！请重试！");
 
         }
         if (!verifyCode.equalsIgnoreCase(verifyCodeByUser)) {
             // 验证码输入错误了
             System.out.println("验证码有误！请仔细输入！");
-            return ResultUtils.fail().msg("验证码有误！请仔细输入！");
+            return ResultUtils.fail().message("验证码有误！请仔细输入！");
 
         }
 
@@ -192,7 +263,7 @@ public class ScmsController {
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                     // 返回失败的对象
-                    return ResultUtils.fail().msg(e.getMessage());
+                    return ResultUtils.fail().message(e.getMessage());
                 }
             case 2:
                 // 学生
@@ -210,7 +281,7 @@ public class ScmsController {
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                     // 返回失败的对象
-                    return ResultUtils.fail().msg(e.getMessage());
+                    return ResultUtils.fail().message(e.getMessage());
                 }
             case 3:
                 // 教师
@@ -228,10 +299,10 @@ public class ScmsController {
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                     // 返回失败的对象
-                    return ResultUtils.fail().msg(e.getMessage());
+                    return ResultUtils.fail().message(e.getMessage());
                 }
         }
-        return ResultUtils.fail().msg("查无此人！请重新输入！");
+        return ResultUtils.fail().message("查无此人！请重新输入！");
     }
 
 }
