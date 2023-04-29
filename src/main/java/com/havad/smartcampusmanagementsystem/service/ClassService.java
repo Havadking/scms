@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.havad.smartcampusmanagementsystem.pojo.Clazz;
 
+import java.util.List;
+
 public interface ClassService extends IService<Clazz> {
     IPage<Clazz> getClassByOpr(Page<Clazz> page, Clazz clazz);
+
+    List<Clazz> getAllClazzs();
 }

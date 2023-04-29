@@ -31,6 +31,16 @@ public class ClassController {
     private ClassService classService;
 
 
+    @ApiOperation("获取全部的班级信息")
+    @GetMapping("/getClazzs")
+    public ResultUtils getClazzs(){
+        List<Clazz> clazzes = classService.getAllClazzs();
+
+        return ResultUtils.success(clazzes);
+    }
+
+
+
     @ApiOperation("删除班级的信息")
     @DeleteMapping("/deleteClazz")
     public ResultUtils deleteClass(@ApiParam("要删除的班级id集合") @RequestBody List<Integer> list){

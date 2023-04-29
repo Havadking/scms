@@ -16,15 +16,18 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @program: SmartCampusManagementSystem
@@ -44,6 +47,41 @@ public class ScmsController {
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
+
+
+    @ApiOperation("头像上传功能的实现")
+    @PostMapping("/headerImgUpload")
+    public ResultUtils headerImgUpload(
+            @ApiParam("图片转换为MultipartFile形式的参数")
+            @RequestPart("multipartFile")
+            MultipartFile multipartFile
+    ){
+
+        // 1.重命名文件
+        String newName = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+        String originalFilename = multipartFile.getOriginalFilename();
+        assert originalFilename != null;
+        String substring = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newFilename =  newName + substring;
+        System.out.println(newFilename);
+
+        // 2.保存文件
+        // 将文件发送到独立的图片服务器，然后获取其url
+        // 为了方便设计，我假设该图片服务器就在/public/upload
+        String portraitPath = "F:\\javaspace\\SmartCampusManagementSystem\\target\\classes\\public\\upload\\".concat(newFilename);
+        System.out.println(portraitPath);
+        try {
+            multipartFile.transferTo(new File(portraitPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // 返回文件的保存路径
+        String path = "upload/".concat(newFilename);
+        return ResultUtils.success(path);
+    }
+
+
 
     @ApiOperation("从token中获取信息")
     @GetMapping("/getInfo")
@@ -82,8 +120,6 @@ public class ScmsController {
 
         return ResultUtils.success(data);
     }
-
-
 
 
     @ApiOperation("生成验证码图片")

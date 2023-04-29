@@ -11,6 +11,8 @@ import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @program: SmartCampusManagementSystem
  * @description: ClassService的实现类
@@ -39,5 +41,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Clazz> implements
         queryWrapper.orderByAsc("id");
 
         return baseMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public List<Clazz> getAllClazzs() {
+        return baseMapper.selectList(null);
     }
 }
